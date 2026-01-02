@@ -31,6 +31,9 @@ public class Product {
     @Column(columnDefinition = "CLOB")
     private String description;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id", nullable = false)
     @JsonBackReference("seller-products")
