@@ -44,6 +44,7 @@ public class AdminController {
         
         if (adminOptional.isPresent()) {
             Admin admin = adminOptional.get();
+            System.out.println(admin);
             admin.setFirstName(adminDetails.getFirstName());
             admin.setLastName(adminDetails.getLastName());
             admin.setEmail(adminDetails.getEmail());

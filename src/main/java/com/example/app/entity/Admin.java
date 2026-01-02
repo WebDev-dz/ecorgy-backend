@@ -27,4 +27,5 @@ public class Admin extends User {
         // This method will be implemented in the service layer
         // The entity layer should not handle business logic directly
     }
+    
 }

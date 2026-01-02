@@ -1,6 +1,7 @@
 package com.example.app.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 public class Worker extends User {
     
     @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("worker-tasks")
     private List<Task> tasks;
     
     public void reportTaskProgress() {

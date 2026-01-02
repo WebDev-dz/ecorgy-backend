@@ -1,6 +1,7 @@
 package com.example.app.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,12 @@ import java.util.List;
 public class Seller extends User {
     
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("seller-products")
     private List<Product> products;
+
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("seller-productitems")
+    private List<ProductItem> product_items;
     
     public List<ProductItem> getMyProducts() {
         // This method will be implemented in the service layer
