@@ -10,6 +10,11 @@
       "description": "Generated server url"
     }
   ],
+  "security": [
+    {
+      "bearer-key": []
+    }
+  ],
   "paths": {
     "/api/workers/{id}": {
       "get": {
@@ -1151,6 +1156,27 @@
       }
     },
     "/api/reviews": {
+      "get": {
+        "tags": [
+          "review-controller"
+        ],
+        "operationId": "getAllReviews",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Review"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "review-controller"
@@ -1226,16 +1252,29 @@
         "tags": [
           "product-controller"
         ],
+        "summary": "Create a new product with image",
         "operationId": "createProduct",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Product"
+                "type": "object",
+                "properties": {
+                  "product": {
+                    "$ref": "#/components/schemas/ProductDto"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Product image file (optional)"
+                  }
+                },
+                "required": [
+                  "product"
+                ]
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -1935,6 +1974,9 @@
           "description": {
             "type": "string"
           },
+          "imageUrl": {
+            "type": "string"
+          },
           "seller": {
             "$ref": "#/components/schemas/Seller"
           },
@@ -2215,6 +2257,32 @@
             "type": "string"
           }
         }
+      },
+      "ProductDto": {
+        "type": "object",
+        "description": "Product DTO",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "serialNumber": {
+            "type": "string"
+          },
+          "sellerId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearer-key": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

@@ -15,6 +15,11 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
+    @GetMapping
+    public List<Review> getAllReviews() {
+        return reviewService.getAllReviews();
+    }
+
     @PostMapping
     public ResponseEntity<Review> createReview(
             @RequestParam Long productId,

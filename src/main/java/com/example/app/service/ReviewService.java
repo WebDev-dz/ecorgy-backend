@@ -44,6 +44,10 @@ public class ReviewService {
         return reviewRepository.findByClientId(clientId);
     }
 
+    public List<Review> getAllReviews() {
+        return reviewRepository.findAll();
+    }
+
     public void deleteReview(Long reviewId) {
         if (!reviewRepository.existsById(reviewId)) {
             throw new RuntimeException("Review not found with id: " + reviewId);

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:title-pattern="$CONTENT_TITLE - Ecorgy Admin">Ecorgy Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#2563EB',
+                            hover: '#1D4ED8',
+                        },
+                        danger: {
+                            DEFAULT: '#DC2626',
+                            hover: '#B91C1C',
+                        },
+                        success: '#16A34A',
+                        surface: '#FFFFFF',
+                        background: '#F6F8FB',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-gray-900 font-sans antialiased h-screen flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-surface border-r border-gray-200 flex-shrink-0 flex flex-col transition-all duration-300" id="sidebar">
+        <div class="h-14 flex items-center px-6 border-b border-gray-200">
+            <span class="text-xl font-bold text-primary">Ecorgy Admin</span>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+            <a th:href="@{/admin}" 
+               class="flex items-center px-3 py-2 text-sm font-medium rounded-md group transition-colors"
+               th:classappend="${currentUri == '/admin' ? 'bg-primary/10 text-primary' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'}">
+                <i class="fas fa-home w-5 mr-3" th:classappend="${currentUri == '/admin' ? 'text-primary' : 'text-gray-400 group-hover:text-gray-500'}"></i>
+                Overview
+            </a>
+            
+            <a th:href="@{/admin/users}" 
+               class="flex items-center px-3 py-2 text-sm font-medium rounded-md group transition-colors"
+               th:classappend="${currentUri != null && currentUri.startsWith('/admin/users') ? 'bg-primary/10 text-primary' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'}">
+                <i class="fas fa-users w-5 mr-3" th:classappend="${currentUri != null && currentUri.startsWith('/admin/users') ? 'text-primary' : 'text-gray-400 group-hover:text-gray-500'}"></i>
+                Users
+            </a>
+            
+            <a th:href="@{/admin/products}" 
+               class="flex items-center px-3 py-2 text-sm font-medium rounded-md group transition-colors"
+               th:classappend="${currentUri != null && currentUri.startsWith('/admin/products') ? 'bg-primary/10 text-primary' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'}">
+                <i class="fas fa-box w-5 mr-3" th:classappend="${currentUri != null && currentUri.startsWith('/admin/products') ? 'text-primary' : 'text-gray-400 group-hover:text-gray-500'}"></i>
+                Products
+            </a>
+            
+            <a th:href="@{/admin/tasks}" 
+               class="flex items-center px-3 py-2 text-sm font-medium rounded-md group transition-colors"
+               th:classappend="${currentUri != null && currentUri.startsWith('/admin/tasks') ? 'bg-primary/10 text-primary' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'}">
+                <i class="fas fa-tasks w-5 mr-3" th:classappend="${currentUri != null && currentUri.startsWith('/admin/tasks') ? 'text-primary' : 'text-gray-400 group-hover:text-gray-500'}"></i>
+                Tasks
+            </a>
+            
+            <a th:href="@{/admin/reviews}" 
+               class="flex items-center px-3 py-2 text-sm font-medium rounded-md group transition-colors"
+               th:classappend="${currentUri != null && currentUri.startsWith('/admin/reviews') ? 'bg-primary/10 text-primary' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'}">
+                <i class="fas fa-star w-5 mr-3" th:classappend="${currentUri != null && currentUri.startsWith('/admin/reviews') ? 'text-primary' : 'text-gray-400 group-hover:text-gray-500'}"></i>
+                Reviews
+            </a>
+        </nav>
+        
+        <div class="border-t border-gray-200 p-4">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-user text-gray-500"></i>
+                    </div>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-700">Admin User</p>
+                    <p class="text-xs text-gray-500">View Profile</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <!-- Topbar -->
+        <header class="h-14 bg-surface border-b border-gray-200 flex items-center justify-between px-6 lg:px-8">
+            <div class="flex items-center">
+                <button id="sidebar-toggle" class="lg:hidden text-gray-500 hover:text-gray-700 mr-4">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="text-lg font-semibold text-gray-900" layout:fragment="page-title">Dashboard</h1>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button onclick="handleLogout()" class="text-sm text-gray-700 hover:text-gray-900 font-medium flex items-center">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    Sign out
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="flex-1 overflow-auto p-6 lg:p-8">
+            <div layout:fragment="content">
+                <!-- Page specific content goes here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simple sidebar toggle for mobile
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('absolute');
+            sidebar.classList.toggle('h-full');
+            sidebar.classList.toggle('z-50');
+        });
+        
+        // Logout function
+        function handleLogout() {
+            // Clear JWT token from storage
+            localStorage.removeItem('token');
+            localStorage.removeItem('jwtToken');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('jwtToken');
+            
+            // Redirect to login page
+            window.location.href = '/admin/login';
+        }
+    </script>
+</body>
+</html>
