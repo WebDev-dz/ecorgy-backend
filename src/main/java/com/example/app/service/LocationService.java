@@ -17,6 +17,10 @@ public class LocationService {
         return locationRepository.findAll();
     }
     
+    public List<Location> getLocationsBySeller(Long sellerId) {
+        return locationRepository.findBySellerId(sellerId);
+    }
+    
     public Location getLocationById(Long id) {
         return locationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Location not found with id: " + id));

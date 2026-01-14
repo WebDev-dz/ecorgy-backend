@@ -1,7 +1,12 @@
 package com.example.app.controller;
 
 import com.example.app.security.JwtUtils;
+import com.example.app.entity.Admin;
+import com.example.app.entity.Client;
 import com.example.app.entity.Product;
+import com.example.app.entity.Review;
+import com.example.app.entity.Task;
+import com.example.app.entity.Worker;
 import com.example.app.service.ProductService;
 import com.example.app.service.ReviewService;
 import com.example.app.service.SellerService;
@@ -146,6 +151,28 @@ public class AdminWebController {
         return "admin/reviews";
     }
 
+    @GetMapping("/reviews/delete/{id}")
+    public String deleteReview(@PathVariable Long id) {
+        try {
+            reviewService.deleteReview(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/admin/reviews";
+    }
+
+    @GetMapping("/reviews/view/{id}")
+    public String viewReview(@PathVariable Long id, Model model) {
+        try {
+            com.example.app.entity.Review review = reviewService.getReviewById(id);
+            model.addAttribute("review", review);
+            return "admin/review-detail";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/admin/reviews";
+        }
+    }
+
     @GetMapping("/tasks/new")
     public String newTask(Model model) {
         model.addAttribute("task", new com.example.app.entity.Task());
@@ -163,6 +190,132 @@ public class AdminWebController {
     public String newUser(Model model) {
         model.addAttribute("user", new java.util.HashMap<String, Object>());
         return "admin/user-form";
+    }
+
+    @PostMapping("/tasks")
+    public String saveTask(@ModelAttribute Task task,
+            @RequestParam(value = "productId", required = false) Long productId,
+            @RequestParam(value = "workerId", required = false) Long workerId,
+            @RequestParam(value = "clientId", required = false) Long clientId,
+            @RequestParam(value = "address", required = false) String address,
+            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "postalCode", required = false) String postalCode) {
+        try {
+            if (productId != null) {
+                task.setProduct(productService.getProductById(productId));
+            }
+            if (workerId != null) {
+                userService.getUserById(workerId).ifPresent(user -> {
+                    if (user instanceof Worker) {
+                        task.setWorker((Worker) user);
+                    }
+                });
+            }
+            if (clientId != null) {
+                userService.getUserById(clientId).ifPresent(user -> {
+                    if (user instanceof Client) {
+                        task.setClient((Client) user);
+                    }
+                });
+            }
+
+            // Create location
+            if (address != null && city != null && postalCode != null) {
+                com.example.app.entity.Location location = com.example.app.entity.Location.builder()
+                        .street(address)
+                        .city(city)
+                        .zipCode(postalCode)
+                        .country("Algeria") // Default country
+                        .latitude(0.0) // Default latitude, should be updated with actual geocoding
+                        .longitude(0.0) // Default longitude, should be updated with actual geocoding
+                        .build();
+                task.setLocation(location);
+            }
+
+            taskService.createTask(task);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/admin/tasks/new?error";
+        }
+        return "redirect:/admin/tasks";
+    }
+
+    @PostMapping("/reviews")
+    public String saveReview(@ModelAttribute Review review,
+            @RequestParam(value = "productId", required = false) Long productId,
+            @RequestParam(value = "clientId", required = false) Long clientId) {
+        try {
+            if (productId != null && clientId != null) {
+                reviewService.addReview(productId, clientId, review);
+            } else {
+                return "redirect:/admin/reviews?error=missing_params";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/admin/reviews?error";
+        }
+        return "redirect:/admin/reviews";
+    }
+
+    @PostMapping("/users")
+    public String saveUser(@RequestParam("userType") String userType,
+            @RequestParam("firstName") String firstName,
+            @RequestParam("lastName") String lastName,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam(value = "phoneNumber", required = false) Integer phoneNumber,
+            @RequestParam(value = "birthDate", required = false) String birthDate) {
+        try {
+            com.example.app.entity.User user;
+
+            switch (userType.toUpperCase()) {
+                case "CLIENT":
+                    user = Client.builder()
+                            .firstName(firstName)
+                            .lastName(lastName)
+                            .email(email)
+                            .password(password)
+                            .phoneNumber(phoneNumber)
+                            .build();
+                    break;
+                case "WORKER":
+                    user = Worker.builder()
+                            .firstName(firstName)
+                            .lastName(lastName)
+                            .email(email)
+                            .password(password)
+                            .phoneNumber(phoneNumber)
+                            .build();
+                    break;
+                case "ADMIN":
+                    user = Admin.builder()
+                            .firstName(firstName)
+                            .lastName(lastName)
+                            .email(email)
+                            .password(password)
+                            .phoneNumber(phoneNumber)
+                            .build();
+                    break;
+                default:
+                    return "redirect:/admin/users/new?error=invalid_type";
+            }
+
+            userService.createUser(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/admin/users/new?error";
+        }
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/admin/users";
     }
 
     @GetMapping("/login")

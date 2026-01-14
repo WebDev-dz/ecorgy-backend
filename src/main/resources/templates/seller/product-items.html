@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{seller/layout}">
+<head>
+    <title>Product Items</title>
+</head>
+<body>
+    <div layout:fragment="page-title">Product Items</div>
+    
+    <div layout:fragment="content">
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Serial Number</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr th:each="item : ${productItems}">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${item.id}">1</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${item.product.name}">Product Name</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${item.product.serialNumber}">SN-123</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${item.price}">0.0</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(productItems)}">
+                            <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
+                                No product items found
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

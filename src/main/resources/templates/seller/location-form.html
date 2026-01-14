@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{seller/layout}">
+<head>
+    <title>New Location</title>
+</head>
+<body>
+    <div layout:fragment="page-title">
+        <a th:href="@{/seller/locations}" class="text-gray-500 hover:text-gray-700 mr-2"><i class="fas fa-arrow-left"></i></a>
+        New Location
+    </div>
+    
+    <div layout:fragment="content">
+        <div class="bg-white shadow rounded-lg overflow-hidden max-w-3xl mx-auto">
+            <form th:action="@{/seller/locations}" method="POST" th:object="${location}" class="p-6 space-y-6">
+                <input type="hidden" th:field="*{id}" />
+                
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <div class="sm:col-span-6">
+                        <label for="street" class="block text-sm font-medium text-gray-700">Street</label>
+                        <div class="mt-1">
+                            <input type="text" id="street" th:field="*{street}" required class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                    
+                    <div class="sm:col-span-3">
+                        <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                        <div class="mt-1">
+                            <input type="text" id="city" th:field="*{city}" required class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                    
+                    <div class="sm:col-span-3">
+                        <label for="zipCode" class="block text-sm font-medium text-gray-700">Zip Code</label>
+                        <div class="mt-1">
+                            <input type="text" id="zipCode" th:field="*{zipCode}" required class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                    
+                    <div class="sm:col-span-3">
+                        <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
+                        <div class="mt-1">
+                            <input type="text" id="country" th:field="*{country}" required class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                    
+                    <div class="sm:col-span-3">
+                        <label for="latitude" class="block text-sm font-medium text-gray-700">Latitude</label>
+                        <div class="mt-1">
+                            <input type="number" step="0.000001" id="latitude" th:field="*{latitude}" required class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                    
+                    <div class="sm:col-span-3">
+                        <label for="longitude" class="block text-sm font-medium text-gray-700">Longitude</label>
+                        <div class="mt-1">
+                            <input type="number" step="0.000001" id="longitude" th:field="*{longitude}" required class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pt-5 border-t border-gray-200">
+                    <div class="flex justify-end">
+                        <a th:href="@{/seller/locations}" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            Cancel
+                        </a>
+                        <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            Save Location
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

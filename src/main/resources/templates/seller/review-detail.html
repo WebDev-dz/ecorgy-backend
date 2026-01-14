@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{seller/layout}">
+<head>
+    <title>Review Details</title>
+</head>
+<body>
+    <div layout:fragment="page-title">Review Details</div>
+    
+    <div layout:fragment="content">
+        <div class="max-w-4xl mx-auto">
+            <!-- Back Button -->
+            <div class="mb-4">
+                <a th:href="@{/seller/reviews}" class="text-sm text-primary hover:text-primary-hover flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Reviews
+                </a>
+            </div>
+
+            <!-- Review Card -->
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <!-- Header -->
+                <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-900">Customer Review</h3>
+                        <span class="text-sm text-gray-500" th:text="${#dates.format(review.createdAt, 'MMMM dd, yyyy')}">October 25, 2023</span>
+                    </div>
+                </div>
+
+                <!-- Review Content -->
+                <div class="p-6 space-y-6">
+                    <!-- Product Info -->
+                    <div class="flex items-center space-x-4 pb-6 border-b border-gray-200">
+                        <img th:src="${review.product.imageUrl != null ? review.product.imageUrl : 'https://via.placeholder.com/80'}" 
+                             class="h-20 w-20 rounded-lg object-cover border border-gray-300"
+                             alt="Product image">
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-900" th:text="${review.product.name}">Product Name</h4>
+                            <p class="text-sm text-gray-500" th:text="'Serial: ' + ${review.product.serialNumber}">Serial: SN-123</p>
+                        </div>
+                    </div>
+
+                    <!-- Customer Info -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6 border-b border-gray-200">
+                        <div>
+                            <h5 class="text-sm font-medium text-gray-500 mb-1">Customer</h5>
+                            <p class="text-base text-gray-900" th:text="${review.client.firstName + ' ' + review.client.lastName}">Customer Name</p>
+                        </div>
+                        <div>
+                            <h5 class="text-sm font-medium text-gray-500 mb-1">Email</h5>
+                            <p class="text-base text-gray-900" th:text="${review.client.email}">customer@example.com</p>
+                        </div>
+                    </div>
+
+                    <!-- Rating -->
+                    <div>
+                        <h5 class="text-sm font-medium text-gray-500 mb-2">Rating</h5>
+                        <div class="flex items-center">
+                            <span class="text-yellow-400 text-2xl" th:each="i : ${#numbers.sequence(1, review.rating)}">
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <span class="text-gray-300 text-2xl" th:each="i : ${#numbers.sequence(review.rating + 1, 5)}">
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <span class="ml-3 text-lg font-medium text-gray-900" th:text="${review.rating} + ' out of 5'">5 out of 5</span>
+                        </div>
+                    </div>
+
+                    <!-- Comment -->
+                    <div>
+                        <h5 class="text-sm font-medium text-gray-500 mb-2">Review Comment</h5>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="text-gray-900 whitespace-pre-wrap" th:text="${review.comment != null ? review.comment : 'No comment provided'}">
+                                This is the review comment text. It can be multiple lines long and will preserve formatting.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end">
+                    <a th:href="@{/seller/reviews}" 
+                       class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        Close
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

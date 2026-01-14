@@ -1,4 +1,4 @@
-```markdown
+````markdown
 ## 1. Product Overview
 A secure, server-rendered Admin Dashboard for managing core business data (users, products, orders) via Thymeleaf templates.
 It provides role-based access control and a consistent sidebar/topbar layout for fast admin operations.
@@ -97,27 +97,31 @@ graph TD
   D1 --> D
   E1 --> E
   F1 --> F
-```
+````
+
 ### 2.3 Page Details
-| Page Name | Module Name | Feature description |
-|-----------|-------------|---------------------|
-| Admin Login | Login form | Authenticate with username/email + password; show validation errors; redirect to Overview on success |
-| Admin Login | Session actions | Provide logout action; prevent access to admin pages when not authenticated |
-| Admin Overview | Layout shell | Render shared sidebar + topbar; show current user + role; highlight active nav item |
-| Admin Overview | KPIs | Display high-level metrics (e.g., total users, total products, orders today, pending orders) |
-| Admin Overview | Recent activity | List latest users and latest orders with links to details |
-| User Management | User list | List users with pagination; search by name/email; filter by role/status |
-| User Management | User detail | View profile fields and recent orders/activity; show audit info (created/updated) |
-| User Management | Admin actions | Update role and status (active/disabled); reset password (optional: trigger flow) |
-| Product Management | Product list | List products with pagination; search by name/SKU; filter by status/category |
-| Product Management | Product editor | Create/edit product (name, SKU, price, status, description); validate required fields |
-| Product Management | Admin actions | Activate/deactivate product; delete product (restricted to higher roles) |
-| Order Management | Order list | List orders with pagination; filter by status/date; search by order id/customer |
-| Order Management | Order detail | View order items, totals, customer info, timeline/status history |
-| Order Management | Admin actions | Update order status (e.g., pending → paid → shipped → completed); add internal notes |
+
+| Page Name          | Module Name     | Feature description                                                                                  |
+| ------------------ | --------------- | ---------------------------------------------------------------------------------------------------- |
+| Admin Login        | Login form      | Authenticate with username/email + password; show validation errors; redirect to Overview on success |
+| Admin Login        | Session actions | Provide logout action; prevent access to admin pages when not authenticated                          |
+| Admin Overview     | Layout shell    | Render shared sidebar + topbar; show current user + role; highlight active nav item                  |
+| Admin Overview     | KPIs            | Display high-level metrics (e.g., total users, total products, orders today, pending orders)         |
+| Admin Overview     | Recent activity | List latest users and latest orders with links to details                                            |
+| User Management    | User list       | List users with pagination; search by name/email; filter by role/status                              |
+| User Management    | User detail     | View profile fields and recent orders/activity; show audit info (created/updated)                    |
+| User Management    | Admin actions   | Update role and status (active/disabled); reset password (optional: trigger flow)                    |
+| Product Management | Product list    | List products with pagination; search by name/SKU; filter by status/category                         |
+| Product Management | Product editor  | Create/edit product (name, SKU, price, status, description); validate required fields                |
+| Product Management | Admin actions   | Activate/deactivate product; delete product (restricted to higher roles)                             |
+| Order Management   | Order list      | List orders with pagination; filter by status/date; search by order id/customer                      |
+| Order Management   | Order detail    | View order items, totals, customer info, timeline/status history                                     |
+| Order Management   | Admin actions   | Update order status (e.g., pending → paid → shipped → completed); add internal notes                 |
 
 ## 3. Core Process
+
 **Authentication + access control flow**
+
 1. You open an admin URL.
 2. If not logged in, you are redirected to Admin Login.
 3. After login, you land on Admin Overview.
@@ -125,12 +129,14 @@ graph TD
 5. Actions (edit/delete/status updates) are permitted or blocked based on your role.
 
 **Super Admin flow**
+
 1. Log in → Overview.
 2. Go to Users → open a user detail → change role/status.
 3. Go to Products → create/edit products.
 4. Go to Orders → update order statuses.
 
 **Support/Viewer flow**
+
 1. Log in → Overview.
 2. Browse Users/Products/Orders lists and details.
 3. Edit controls are hidden/disabled and server-side enforcement denies write requests.
@@ -148,6 +154,9 @@ graph TD
   D1 --> D
   E1 --> E
 ```
-````
+
+```
 
 this is prd admin dashboard with themlyf it's not compatible with open api docs now update the prd to be compatible and manage tasks, users, products, reviews like api dos says
+```
+

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{seller/layout}">
+<head>
+    <title th:text="${product.id != null ? 'Edit Product' : 'New Product'}">Product Form</title>
+</head>
+<body>
+    <div layout:fragment="page-title" th:text="${product.id != null ? 'Edit Product' : 'New Product'}">Product Form</div>
+    
+    <div layout:fragment="content">
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-white shadow rounded-lg">
+                <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900" th:text="${product.id != null ? 'Edit Product Details' : 'Add New Product'}">Product Form</h3>
+                </div>
+                
+                <form th:action="@{/seller/products}" method="post" enctype="multipart/form-data" class="p-6 space-y-6">
+                    <input type="hidden" th:field="${product.id}">
+                    
+                    <!-- Product Name -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Product Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="name" th:field="${product.name}" required
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+                               placeholder="Enter product name">
+                    </div>
+
+                    <!-- Serial Number -->
+                    <div>
+                        <label for="serialNumber" class="block text-sm font-medium text-gray-700 mb-2">
+                            Serial Number <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="serialNumber" th:field="${product.serialNumber}" required
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+                               placeholder="e.g., SN-12345">
+                        <p class="mt-1 text-sm text-gray-500">Unique identifier for this product</p>
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                            Description
+                        </label>
+                        <textarea id="description" th:field="${product.description}" rows="4"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+                                  placeholder="Enter product description"></textarea>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div>
+                        <label for="file-upload" class="block text-sm font-medium text-gray-700 mb-2">
+                            Product Image
+                        </label>
+                        <div class="mt-1 flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <img th:if="${product.imageUrl != null}" 
+                                     th:src="${product.imageUrl}" 
+                                     class="h-20 w-20 rounded-lg object-cover border border-gray-300"
+                                     alt="Current product image">
+                                <div th:unless="${product.imageUrl != null}" 
+                                     class="h-20 w-20 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-300">
+                                    <i class="fas fa-image text-gray-400 text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <input type="file" id="file-upload" name="file-upload" accept="image/*"
+                                       class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-hover">
+                                <p class="mt-1 text-sm text-gray-500">PNG, JPG, JPEG up to 10MB</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
+                        <a th:href="@{/seller/products}" 
+                           class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            Cancel
+                        </a>
+                        <button type="submit"
+                                class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            <i class="fas fa-save mr-2"></i>
+                            <span th:text="${product.id != null ? 'Update Product' : 'Create Product'}">Save Product</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

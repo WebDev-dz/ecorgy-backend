@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<head>
+    <title>Add New Task</title>
+</head>
+<body>
+    <div layout:fragment="page-title">
+        <a th:href="@{/admin/tasks}" class="text-gray-500 hover:text-gray-700 mr-2"><i class="fas fa-arrow-left"></i></a>
+        Add New Task
+    </div>
+    
+    <div layout:fragment="content">
+        <div class="bg-white shadow rounded-lg overflow-hidden max-w-4xl mx-auto">
+            <form th:action="@{/admin/tasks}" method="POST" th:object="${task}" class="p-6 space-y-6">
+                <input type="hidden" th:field="*{id}" />
+                
+                <!-- Task Information -->
+                <div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Task Information</h3>
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <div class="sm:col-span-6">
+                            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                            <div class="mt-1">
+                                <textarea id="description" th:field="*{description}" rows="4" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border border-gray-300 rounded-md" required></textarea>
+                            </div>
+                            <p class="mt-2 text-sm text-gray-500">Detailed description of the task.</p>
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                            <div class="mt-1">
+                                <select id="status" th:field="*{status}" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md" required>
+                                    <option value="">Select Status</option>
+                                    <option value="PENDING">Pending</option>
+                                    <option value="IN_PROGRESS">In Progress</option>
+                                    <option value="CONFIRMED">Confirmed</option>
+                                    <option value="COMPLETED">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="product" class="block text-sm font-medium text-gray-700">Product</label>
+                            <div class="mt-1">
+                                <select id="product" name="productId" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md" required>
+                                    <option value="" disabled selected>Select Product</option>
+                                    <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="worker" class="block text-sm font-medium text-gray-700">Worker</label>
+                            <div class="mt-1">
+                                <select id="worker" name="workerId" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md" required>
+                                    <option value="" disabled selected>Select Worker</option>
+                                    <option th:each="worker : ${workers}" th:value="${worker.id}" th:text="${worker.firstName + ' ' + worker.lastName}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="client" class="block text-sm font-medium text-gray-700">Client</label>
+                            <div class="mt-1">
+                                <select id="client" name="clientId" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md" required>
+                                    <option value="" disabled selected>Select Client</option>
+                                    <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.firstName + ' ' + client.lastName}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location Information -->
+                <div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Location Information</h3>
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <div class="sm:col-span-4">
+                            <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                            <div class="mt-1">
+                                <input type="text" id="address" name="address" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md" required>
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                            <div class="mt-1">
+                                <input type="text" id="city" name="city" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md" required>
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="postalCode" class="block text-sm font-medium text-gray-700">Postal Code</label>
+                            <div class="mt-1">
+                                <input type="text" id="postalCode" name="postalCode" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-5 border-t border-gray-200">
+                    <div class="flex justify-end">
+                        <a th:href="@{/admin/tasks}" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            Cancel
+                        </a>
+                        <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            Save Task
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</body>
+</html>

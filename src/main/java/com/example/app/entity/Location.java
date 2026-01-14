@@ -35,6 +35,10 @@ public class Location {
     
     @Column(nullable = false)
     private String country;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+    private Seller seller;
     
     public Integer getWilayaCode(String wilaya) {
         switch (wilaya) {

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{seller/layout}">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <div layout:fragment="page-title">Dashboard Overview</div>
+    
+    <div layout:fragment="content">
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Products -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="h-12 w-12 rounded-md bg-green-100 flex items-center justify-center text-green-600">
+                                <i class="fas fa-box text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">My Products</dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-gray-900" th:text="${totalProducts}">0</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Average Rating -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="h-12 w-12 rounded-md bg-yellow-100 flex items-center justify-center text-yellow-600">
+                                <i class="fas fa-star text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Avg Rating</dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-gray-900" th:text="${avgRating}">0.0</div>
+                                    <div class="ml-2 flex items-baseline text-sm font-semibold text-yellow-600">
+                                        <i class="fas fa-star self-center flex-shrink-0 h-4 w-4"></i>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Reviews -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="h-12 w-12 rounded-md bg-blue-100 flex items-center justify-center text-blue-600">
+                                <i class="fas fa-comments text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Total Reviews</dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-gray-900" th:text="${totalReviews}">0</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Tasks -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="h-12 w-12 rounded-md bg-purple-100 flex items-center justify-center text-purple-600">
+                                <i class="fas fa-tasks text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Active Tasks</dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-gray-900" th:text="${activeTasks}">0</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity & Quick Links -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Recent Tasks Table -->
+            <div class="lg:col-span-2 bg-white shadow rounded-lg">
+                <div class="px-4 py-5 border-b border-gray-200 sm:px-6 flex justify-between items-center">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Recent Tasks</h3>
+                    <a th:href="@{/seller/tasks}" class="text-sm text-primary hover:text-primary-hover">View all</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr th:each="task : ${recentTasks}">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="'#' + ${task.id}">#1024</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${task.description}">Task description</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800" 
+                                          th:classappend="${task.status == 'Completed' ? 'bg-green-100 text-green-800' : (task.status == 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800')}"
+                                          th:text="${task.status}">Pending</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${#dates.format(task.createdAt, 'yyyy-MM-dd')}">2023-10-25</td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(recentTasks)}">
+                                <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
+                                    No recent tasks
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white shadow rounded-lg">
+                <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Quick Actions</h3>
+                </div>
+                <div class="p-6 grid grid-cols-1 gap-4">
+                    <a th:href="@{/seller/products/new}" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-hover">
+                        <i class="fas fa-plus mr-2"></i> Add New Product
+                    </a>
+                    <a th:href="@{/seller/products}" class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-box-open mr-2"></i> Manage Products
+                    </a>
+                    <a th:href="@{/seller/reviews}" class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-star mr-2"></i> View Reviews
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
